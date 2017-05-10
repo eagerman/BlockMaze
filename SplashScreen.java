@@ -7,7 +7,7 @@ import javax.swing.border.EmptyBorder;
 
 public class SplashScreen extends JFrame {
 
-	// a
+	// abcd
 	private Image bgImage;
 	private JPanel gamescreen;
 	private JPanel info;
