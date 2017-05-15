@@ -175,7 +175,6 @@ public class GameModel {
 			case 0:
 				
 				if(isObstacle(this.model[player_location.x-2][player_location.y])) return;
-				
 				if(this.model[player_location.x-2][player_location.y] == '!') this.goals--;
 				
 				this.model[player_location.x-2][player_location.y] = '#';
@@ -186,7 +185,7 @@ public class GameModel {
 			case 1: 
 				
 				if(isObstacle(this.model[player_location.x][player_location.y-2])) return;
-				if(isObstacle(this.model[player_location.x][player_location.y-2])) this.goals--;
+				if(this.model[player_location.x][player_location.y-2] == '!') this.goals--;
 				
 				this.model[player_location.x][player_location.y-2] = '#';
 				this.model[player_location.x][player_location.y-1] = ' ';
@@ -196,7 +195,7 @@ public class GameModel {
 			case 2:
 			
 				if(isObstacle(this.model[player_location.x+2][player_location.y])) return;
-				if(isObstacle(this.model[player_location.x+2][player_location.y])) this.goals--;
+				if(this.model[player_location.x+2][player_location.y] == '!') this.goals--;
 				
 				this.model[player_location.x+2][player_location.y] = '#';
 				this.model[player_location.x+1][player_location.y] = ' ';
@@ -206,7 +205,7 @@ public class GameModel {
 			case 3:
 			
 				if(isObstacle(this.model[player_location.x][player_location.y+2])) return;
-				if(isObstacle(this.model[player_location.x][player_location.y+2])) this.goals--;
+				if(this.model[player_location.x][player_location.y+2] == '!') this.goals--;
 				
 				this.model[player_location.x][player_location.y+2] = '#';
 				this.model[player_location.x][player_location.y+1] = ' ';
