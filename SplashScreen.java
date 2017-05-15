@@ -24,13 +24,14 @@ public class SplashScreen extends JFrame {
     	
     	String how_to = "<html>This is how you play the game etc<br></html>";
     	JLabel info_text = new JLabel(how_to);
-    	info_text.setPreferredSize(new Dimension(150,150));
+    	info_text.setFont(new Font("Serif", Font.PLAIN, 22));
+    	info_text.setPreferredSize(new Dimension(350,350));
     	
     	info = new JPanel();
-    	info.setPreferredSize(new Dimension(200,200));
-    	info.setFont(new Font("Serif", Font.PLAIN, 14));
+    	info.setPreferredSize(new Dimension(600,500));
     	
     	JButton back_to_menu = new JButton("Back");
+    	back_to_menu.setFont(new Font("Serif", Font.PLAIN, 22));
     	
         back_to_menu.addActionListener((ActionEvent event) -> {
         	makeGameScreen();
