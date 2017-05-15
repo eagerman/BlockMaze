@@ -9,6 +9,7 @@ public class GameModel {
 
 	private char[][] model;
 	private Point player_location;
+	private int goals;
 	
 	public GameModel(int x, int y) {
 
@@ -77,6 +78,24 @@ public class GameModel {
 		
 	}
 	
+	public void set_goal_number() {
+		
+		int num_goals = 0;
+		
+		for(int i=0; i<model.length; i++) {
+			
+			for(int j=0; j<model.length; j++) {
+				
+				if(model[i][j] == '!') num_goals++;
+				
+			}
+			
+		}
+		
+		this.goals = num_goals;
+		
+	}
+	
 	public void print_model() {
 		
 		for(int i=0; i<model.length; i++) {
@@ -98,12 +117,6 @@ public class GameModel {
 	 * doesnt really matter too much so long as it's consistent
 	 */
 	public void update_player_position(int value) { //0=up, 1=left, 2=down, 3=right
-		
-		System.out.println("UPDATING POSITION");
-		
-		char tmp;
-		
-		//if player loc + value > model.length then return
 
 		switch(value) {
 		
@@ -151,7 +164,7 @@ public class GameModel {
 		
 		}
 		
-		System.out.println("Player position is "+this.player_location.toString());
+		//System.out.println("Player position is "+this.player_location.toString());
 		
 	}
 	
@@ -163,6 +176,8 @@ public class GameModel {
 				
 				if(isObstacle(this.model[player_location.x-2][player_location.y])) return;
 				
+				if(this.model[player_location.x-2][player_location.y] == '!') this.goals--;
+				
 				this.model[player_location.x-2][player_location.y] = '#';
 				this.model[player_location.x-1][player_location.y] = ' ';
 				
@@ -171,6 +186,7 @@ public class GameModel {
 			case 1: 
 				
 				if(isObstacle(this.model[player_location.x][player_location.y-2])) return;
+				if(isObstacle(this.model[player_location.x][player_location.y-2])) this.goals--;
 				
 				this.model[player_location.x][player_location.y-2] = '#';
 				this.model[player_location.x][player_location.y-1] = ' ';
@@ -180,6 +196,7 @@ public class GameModel {
 			case 2:
 			
 				if(isObstacle(this.model[player_location.x+2][player_location.y])) return;
+				if(isObstacle(this.model[player_location.x+2][player_location.y])) this.goals--;
 				
 				this.model[player_location.x+2][player_location.y] = '#';
 				this.model[player_location.x+1][player_location.y] = ' ';
@@ -189,6 +206,7 @@ public class GameModel {
 			case 3:
 			
 				if(isObstacle(this.model[player_location.x][player_location.y+2])) return;
+				if(isObstacle(this.model[player_location.x][player_location.y+2])) this.goals--;
 				
 				this.model[player_location.x][player_location.y+2] = '#';
 				this.model[player_location.x][player_location.y+1] = ' ';
@@ -255,19 +273,28 @@ public class GameModel {
 		
 	}
 	
+	public boolean game_won() {
+		
+		return this.goals == 0;
+		
+	}
+	
 	// method to arrange the view based on the model
 	
 	public static void main(String[] args) {
 		
 		GameModel m = new GameModel(30,30); // dims for test map
 		m.open_file(args[0]);
+		m.set_goal_number();
 		
-		while(true) {
+		while(! m.game_won()) {
 			
 			m.print_model();
 			m.read_player_input(); 
 			
 		}
+		
+		System.out.println("GAME OVER!\nYOU WIN!\n");
 		
 	}
 	
