@@ -59,8 +59,8 @@ public class SplashScreen extends JFrame {
     	
     	JButton upButton = new JButton(up_arrow);
     	JButton down_action = new JButton(down_arrow);
-    	JButton leftButton = new JButton("<——");
-    	JButton rightButton = new JButton("——>");
+    	JButton leftButton = new JButton("<—");
+    	JButton rightButton = new JButton("—>");
     	JButton btnReset = new JButton("Reset");
     	JButton btnUndo = new JButton("Undo");
     	JButton btnLastLev = new JButton("Last Level");
