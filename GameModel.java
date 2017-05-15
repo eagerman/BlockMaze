@@ -259,7 +259,7 @@ public class GameModel {
 	
 	public static void main(String[] args) {
 		
-		GameModel m = new GameModel(20,50); // dims for test map
+		GameModel m = new GameModel(30,30); // dims for test map
 		m.open_file(args[0]);
 		
 		while(true) {
