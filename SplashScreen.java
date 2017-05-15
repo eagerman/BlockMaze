@@ -5,9 +5,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("serial")
 public class SplashScreen extends JFrame {
 
-	// bjviv
 	private Image bgImage;
 	private JPanel gamescreen;
 	private JPanel info;
@@ -44,17 +44,29 @@ public class SplashScreen extends JFrame {
     	
     }
     
-    private void makeGameScreen() {
+	private void makeGameScreen() {
     	
     	gamescreen = new JPanel(new BorderLayout());
-    	gamescreen.setPreferredSize(new Dimension(600,500));
+    	gamescreen.setPreferredSize(new Dimension(700,600));
     	
     	JPanel controls = new JPanel();
     	JPanel game = new JPanel();
     	
     	ImageIcon down_arrow = new ImageIcon("arrow-down.png");
-    	JButton down_action = new JButton(down_arrow);
+    	ImageIcon up_arrow = new ImageIcon("up_arrow.png");
+    	//ImageIcon left_arrow = new ImageIcon("left.png");
+    	//ImageIcon right_arrow = new ImageIcon("right.png");
     	
+    	JButton upButton = new JButton(up_arrow);
+    	JButton down_action = new JButton(down_arrow);
+    	JButton leftButton = new JButton("<——");
+    	JButton rightButton = new JButton("——>");
+    	JButton btnReset = new JButton("Reset");
+    	JButton btnUndo = new JButton("Undo");
+    	JButton btnLastLev = new JButton("Last Level");
+    	JButton btnNextLev = new JButton("Next Level");
+    	JButton btnChooseLev = new JButton("Choose Level");
+    	JButton btnmic = new JButton("Music");
     	JButton back_to_menu = new JButton("Back");
     	
         back_to_menu.addActionListener((ActionEvent event) -> {
@@ -63,15 +75,73 @@ public class SplashScreen extends JFrame {
         	revalidate();
         	pack();
         });
-
-    	controls.add(down_action, BorderLayout.NORTH);
-    	controls.add(back_to_menu, BorderLayout.SOUTH);
+        
+        controls.setLayout(new BoxLayout(controls, BoxLayout.Y_AXIS));
+    	
+        upButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    upButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+	    upButton.setPreferredSize(new Dimension(150, 25));
+	    leftButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    leftButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+	    leftButton.setPreferredSize(new Dimension(150, 25));
+	    rightButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    rightButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+	    rightButton.setPreferredSize(new Dimension(150, 25));
+	    down_action.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    down_action.setAlignmentY(Component.CENTER_ALIGNMENT);
+	    down_action.setPreferredSize(new Dimension(150, 25));
+	    back_to_menu.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    back_to_menu.setAlignmentY(Component.CENTER_ALIGNMENT);
+	    back_to_menu.setPreferredSize(new Dimension(150, 25));
+	    btnReset.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    btnReset.setAlignmentY(Component.CENTER_ALIGNMENT);
+	    btnReset.setPreferredSize(new Dimension(150, 25));
+	    btnUndo.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    btnUndo.setAlignmentY(Component.CENTER_ALIGNMENT);
+	    btnUndo.setPreferredSize(new Dimension(150, 25));
+	    btnLastLev.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    btnLastLev.setAlignmentY(Component.CENTER_ALIGNMENT);
+	    btnLastLev.setPreferredSize(new Dimension(150, 25));
+	    btnNextLev.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    btnNextLev.setAlignmentY(Component.CENTER_ALIGNMENT);
+	    btnNextLev.setPreferredSize(new Dimension(150, 25));
+	    btnChooseLev.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    btnChooseLev.setAlignmentY(Component.CENTER_ALIGNMENT);
+	    btnChooseLev.setPreferredSize(new Dimension(150, 25));
+	    btnmic.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    btnmic.setAlignmentY(Component.CENTER_ALIGNMENT);
+	    btnmic.setPreferredSize(new Dimension(150, 25));
+	
+	    controls.add(Box.createRigidArea(new Dimension(25, 25)));
+	    controls.add(upButton);
+		controls.add(Box.createRigidArea(new Dimension(0, 25)));
+		controls.add(leftButton);
+		controls.add(Box.createRigidArea(new Dimension(0, 25)));
+		controls.add(rightButton);
+		controls.add(Box.createRigidArea(new Dimension(0, 25)));
+		controls.add(down_action);
+		controls.add(Box.createRigidArea(new Dimension(0, 25)));
+		controls.add(btnReset);
+		controls.add(Box.createRigidArea(new Dimension(0, 25)));
+		controls.add(btnUndo);
+		controls.add(Box.createRigidArea(new Dimension(0, 25)));
+		controls.add(btnLastLev);
+		controls.add(Box.createRigidArea(new Dimension(0, 25)));	
+		controls.add(btnNextLev);
+		controls.add(Box.createRigidArea(new Dimension(0, 25)));
+		controls.add(btnChooseLev);
+		controls.add(Box.createRigidArea(new Dimension(0, 25)));
+		controls.add(btnmic);
+		controls.add(Box.createRigidArea(new Dimension(0, 25)));
+		controls.add(back_to_menu);
+		
     	
     	game.setBackground(Color.BLUE);
     	
     	gamescreen.add(controls, BorderLayout.EAST);
     	gamescreen.add(game, BorderLayout.CENTER);
-    	
+  
+        
     }
     
     private JPanel initMenu() {
@@ -107,7 +177,7 @@ public class SplashScreen extends JFrame {
             System.exit(0);
         });
 
-        menuPanel.setPreferredSize(new Dimension(150, 150));
+        menuPanel.setPreferredSize(new Dimension(600, 600));
         
         //group layout actually has a linkSize method that could save me the bother here
         
@@ -123,11 +193,11 @@ public class SplashScreen extends JFrame {
  
         menuPanel.add(Box.createRigidArea(new Dimension(50, 50)));
         menuPanel.add(newgameBtn);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 100)));
         menuPanel.add(infoBtn);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 100)));
         menuPanel.add(quitBtn);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 100)));
         
         return menuPanel;
     	
@@ -140,7 +210,7 @@ public class SplashScreen extends JFrame {
         
         JPanel menuPanel = initMenu();
         
-        backgroundPanel.setPreferredSize(new Dimension(300,300));
+        backgroundPanel.setPreferredSize(new Dimension(600,500));
         backgroundPanel.add(menuPanel);
 
         backgroundPanel.setBorder(new EmptyBorder(new Insets(20, 20, 20, 20)));
@@ -150,6 +220,7 @@ public class SplashScreen extends JFrame {
         pack();
 
         setTitle("Warehouse Boss");
+        //setSize(700, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
