@@ -57,7 +57,7 @@ public class gameScreen extends JFrame implements ActionListener {
 		aau.stop();
 		sign = false;
 	}
-	
+	 
 	private boolean isplay(){
 		return sign;
 	} 
