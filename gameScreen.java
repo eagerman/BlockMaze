@@ -17,7 +17,7 @@ public class gameScreen extends JFrame implements ActionListener {
 	JButton tempButton;
 	boolean sign;
 	URL cb = null;
-	File f = new File("C:\\Users\\May\\workspace\\Level\\src\\cello.wav");
+	File f = new File("color-X.wav");
 	AudioClip aau;
 	
 	gameScreen(JPanel panel, JButton musicButton){
