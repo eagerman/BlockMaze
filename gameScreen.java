@@ -60,6 +60,6 @@ public class gameScreen extends JFrame implements ActionListener {
 	
 	private boolean isplay(){
 		return sign;
-	}
+	} 
 
 }
