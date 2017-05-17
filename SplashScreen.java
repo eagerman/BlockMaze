@@ -1,4 +1,4 @@
-package button;
+package game;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
-public class SplashScreen extends JFrame {
+public class Game extends JFrame {
 
 	private Image bgImage;
 	private JPanel gamescreen;
@@ -14,7 +14,7 @@ public class SplashScreen extends JFrame {
 	private JPanel menu;
 	//private JLabel info-test;
 
-    public SplashScreen() {
+    public Game() {
 
     	bgImage = Toolkit.getDefaultToolkit().createImage("SimpleCrate.png");
         initUI();
@@ -136,6 +136,8 @@ public class SplashScreen extends JFrame {
 		controls.add(Box.createRigidArea(new Dimension(0, 25)));
 		controls.add(back_to_menu);
 		
+		new gameScreen(controls, btnmic);
+		
     	
     	game.setBackground(Color.BLUE);
     	
@@ -238,7 +240,7 @@ public class SplashScreen extends JFrame {
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(() -> {
-            SplashScreen ex = new SplashScreen();
+            Game ex = new Game();
             ex.setVisible(true);
         });
     }
