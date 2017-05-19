@@ -50,7 +50,7 @@ public class Game extends JFrame {
 	private void makeGameScreen() {
     	
     	gamescreen = new JPanel(new BorderLayout());
-    	gamescreen.setPreferredSize(new Dimension(700,600));
+    	gamescreen.setPreferredSize(new Dimension(900,800));
     	
     	JPanel controls = new JPanel();
     	JPanel game = new JPanel();
@@ -72,7 +72,11 @@ public class Game extends JFrame {
     	JButton btnmic = new JButton("Close Music");
     	JButton back_to_menu = new JButton("Back");
     	
-    	Sound sound = new Sound(controls, btnmic, "color-X.wav");
+    	Sound sound = new Sound(controls, btnmic, "Color X.wav");
+    	
+    	JLabel timer = new JLabel("00:00:00");
+    	new SetTimer(timer);
+    	
     	if(!soundMenu.isplay()){
     		sound.stopMusic();
     		btnmic.setLabel("Open Music");
@@ -104,6 +108,9 @@ public class Game extends JFrame {
 	    back_to_menu.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    back_to_menu.setAlignmentY(Component.CENTER_ALIGNMENT);
 	    back_to_menu.setPreferredSize(new Dimension(150, 25));
+	    timer.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    timer.setAlignmentY(Component.CENTER_ALIGNMENT);
+	    timer.setPreferredSize(new Dimension(150, 25));
 	    btnReset.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    btnReset.setAlignmentY(Component.CENTER_ALIGNMENT);
 	    btnReset.setPreferredSize(new Dimension(150, 25));
@@ -131,6 +138,8 @@ public class Game extends JFrame {
 		controls.add(rightButton);
 		controls.add(Box.createRigidArea(new Dimension(0, 25)));
 		controls.add(down_action);
+		controls.add(Box.createRigidArea(new Dimension(0, 25)));
+		controls.add(timer);
 		controls.add(Box.createRigidArea(new Dimension(0, 25)));
 		controls.add(btnReset);
 		controls.add(Box.createRigidArea(new Dimension(0, 25)));
