@@ -11,19 +11,20 @@ import java.net.URL;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
-public class gameScreen extends JFrame implements ActionListener {
+public class Sound extends JFrame implements ActionListener {
 
 	JPanel panel;
 	JButton tempButton;
 	boolean sign;
 	URL cb = null;
-	File f = new File("color-X.wav");
+	File f;
 	AudioClip aau;
 	
-	gameScreen(JPanel panel, JButton musicButton){
+	Sound(JPanel panel, JButton musicButton, String musicName){
 		this.panel = panel;
 		this.tempButton = musicButton;
 		tempButton.addActionListener(this);
+		f = new File(musicName);
 		soundLoad();
 	}
 
@@ -32,16 +33,17 @@ public class gameScreen extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == tempButton){
 			if(!isplay()){
-				soundLoad();tempButton.setLabel("Open");
+				soundLoad();tempButton.setLabel("Close Music");
+				
 			} else {
-				stopMusic();tempButton.setLabel("Close");
+				stopMusic();tempButton.setLabel("Open Music");
 			}
 		}
 		panel.requestFocus();
 	}
 	
 	@SuppressWarnings("deprecation")
-	private void soundLoad(){
+	void soundLoad(){
 		
 		try {
 			cb = f.toURL();
@@ -53,13 +55,13 @@ public class gameScreen extends JFrame implements ActionListener {
 		sign = true;
 	}
 	
-	private void stopMusic(){
+	void stopMusic(){
 		aau.stop();
 		sign = false;
 	}
-	 
-	private boolean isplay(){
+	
+	boolean isplay(){
 		return sign;
-	} 
+	}
 
 }
