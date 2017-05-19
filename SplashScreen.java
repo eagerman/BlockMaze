@@ -12,6 +12,7 @@ public class Game extends JFrame {
 	private JPanel gamescreen;
 	private JPanel info;
 	private JPanel menu;
+	private Sound soundMenu;
 	//private JLabel info-test;
 
     public Game() {
@@ -45,6 +46,7 @@ public class Game extends JFrame {
     	
     }
     
+	@SuppressWarnings("deprecation")
 	private void makeGameScreen() {
     	
     	gamescreen = new JPanel(new BorderLayout());
@@ -67,11 +69,19 @@ public class Game extends JFrame {
     	JButton btnLastLev = new JButton("Last Level");
     	JButton btnNextLev = new JButton("Next Level");
     	JButton btnChooseLev = new JButton("Choose Level");
-    	JButton btnmic = new JButton("Music");
+    	JButton btnmic = new JButton("Close Music");
     	JButton back_to_menu = new JButton("Back");
     	
+    	Sound sound = new Sound(controls, btnmic, "color-X.wav");
+    	if(!soundMenu.isplay()){
+    		sound.stopMusic();
+    		btnmic.setLabel("Open Music");
+    	}
         back_to_menu.addActionListener((ActionEvent event) -> {
-        	makeGameScreen();
+        	sound.stopMusic();
+        	if(soundMenu.isplay()){
+        		soundMenu.aau.loop();
+        	}
         	setContentPane(this.menu);
         	revalidate();
         	pack();
@@ -136,9 +146,6 @@ public class Game extends JFrame {
 		controls.add(Box.createRigidArea(new Dimension(0, 25)));
 		controls.add(back_to_menu);
 		
-		new gameScreen(controls, btnmic);
-		
-    	
     	game.setBackground(Color.BLUE);
     	
     	gamescreen.add(controls, BorderLayout.EAST);
@@ -160,10 +167,14 @@ public class Game extends JFrame {
 
         JButton quitBtn = new JButton("Quit", quitIcon);
         JButton infoBtn = new JButton("Info", infoIcon);
+        JButton musBtn = new JButton("Close Music");
         JButton newgameBtn = new JButton("Play", newgameIcon);
+        
+        soundMenu = new Sound(menuPanel, musBtn, "all for you.wav");
         
         newgameBtn.addActionListener((ActionEvent event) -> {
         	makeGameScreen();
+        	soundMenu.aau.stop();
         	setContentPane(gamescreen);
         	revalidate();
         	pack();
@@ -190,17 +201,22 @@ public class Game extends JFrame {
         infoBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         infoBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
         infoBtn.setPreferredSize(new Dimension(25, 25));
+        musBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        musBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
+        musBtn.setPreferredSize(new Dimension(25, 25));
         newgameBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         newgameBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
         newgameBtn.setPreferredSize(new Dimension(25, 25));
  
         menuPanel.add(Box.createRigidArea(new Dimension(50, 50)));
         menuPanel.add(newgameBtn);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 100)));
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 80)));
         menuPanel.add(infoBtn);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 100)));
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 80)));
+        menuPanel.add(musBtn);
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 80)));
         menuPanel.add(quitBtn);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 100)));
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 80)));
         
         return menuPanel;
     	
