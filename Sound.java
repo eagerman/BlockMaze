@@ -63,5 +63,5 @@ public class Sound extends JFrame implements ActionListener {
 	boolean isplay(){
 		return sign;
 	}
-
+	
 }
