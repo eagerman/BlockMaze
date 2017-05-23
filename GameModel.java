@@ -8,6 +8,8 @@ import java.io.IOException;
 
 public class GameModel {
 
+	private LevelManager levels;
+	private Level current;
 	private char[][] model;
 	private Point player_location;
 	private ArrayList<Point> goal_locations;
@@ -16,12 +18,47 @@ public class GameModel {
 	private int rows;
 	private int cols; 
 	
-	public GameModel() {
+	public GameModel() throws IOException {
 
-		this.player_location = new Point();
-		this.goal_locations = new ArrayList<Point>();
+		this.levels = new LevelManager();
+		//this.player_location = new Point();
+		//this.goal_locations = new ArrayList<Point>();
 		//this.controls = new GameController(this); //////////////////
 
+	}
+	
+	public void init_game_model() {
+		
+		this.current = this.levels.get_next_level();
+		
+		if(this.current == null) return;
+		
+		this.goal_locations = this.current.get_goal_locations();
+		char[][] game_model = this.current.get_level();
+		this.rows = this.current.get_rows();
+		this.cols = this.current.get_cols();
+		this.model = new char[this.rows][this.cols];
+		copy_model(game_model);
+		this.goals = this.current.get_num_goals();
+		this.player_location = this.current.get_player_pos();
+		this.view = new GameView(this.model,this.rows,this.cols,this); //currently creates new window as GameView is JFrame
+		init_view(this.model);
+		
+	}
+	
+
+	private void copy_model(char[][] view) {
+		
+		for(int i=0; i < this.rows; i++) {
+			
+			for(int j=0; j < this.cols; j++) {
+				
+				this.model[i][j] = view[i][j];
+				
+			}
+			
+		}
+		
 	}
 
 	public void init_view(char[][] model) {
@@ -330,7 +367,7 @@ public class GameModel {
 			return;
 			
 		}else if(isGoal(this.model[getRow()][getCol()-1])) {
-			
+
 			playerLeftOntoGoal();
 			return;
 			
@@ -349,6 +386,8 @@ public class GameModel {
 	
 	private void playerLeftOntoGoal() {
 		
+		System.out.println("LEFT ONTO GOAL");
+		
 		this.model[getRow()][getCol()-1] = '&';
 		this.model[getRow()][getCol()] = ' ';
 		this.player_location.move(getRow(), getCol()-1);
@@ -356,6 +395,8 @@ public class GameModel {
 	}
 	
 	private void playerLeftOffGoal() { 
+		
+		System.out.println("LEFT OFF GOAL");
 		
 		this.model[getRow()][getCol()-1] = '^';
 		this.model[getRow()][getCol()] = '!';
@@ -757,10 +798,11 @@ public class GameModel {
 		
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		GameModel m = new GameModel(); 
-		m.open_file("test2.txt");
+		//m.open_file("test2.txt");
+		m.init_game_model();
 		
 	}
 	
