@@ -20,6 +20,7 @@ public class GameModel {
 
 		this.player_location = new Point();
 		this.goal_locations = new ArrayList<Point>();
+		//this.controls = new GameController(this); //////////////////
 
 	}
 
@@ -492,10 +493,12 @@ public class GameModel {
 	}
 	
 	private void moveBoxUpToGoal() {
+		
+		char tmp = (this.model[getRow()][getCol()] == '&') ? '!' : ' ' ;
 
 		this.model[getRow()-2][getCol()] = '@';
 		this.model[getRow()-1][getCol()] = '^';
-		this.model[getRow()][getCol()] = ' '; // bug if pushing box up onto goal square while player is '&'???
+		this.model[getRow()][getCol()] = tmp; 
 		
 		this.player_location.move(getRow()-1,getCol());
 		
@@ -555,10 +558,12 @@ public class GameModel {
 	}
 
 	private void moveBoxDownToGoal() {
+		
+		char tmp = (this.model[getRow()][getCol()] == '&') ? '!' : ' ' ;
 
 		this.model[getRow()+2][getCol()] = '@';
 		this.model[getRow()+1][getCol()] = '^';
-		this.model[getRow()][getCol()] = ' '; // bug if pushing box up onto goal square while player is '&'???
+		this.model[getRow()][getCol()] = tmp; 
 		
 		this.player_location.move(getRow()+1,getCol());
 		
@@ -618,10 +623,12 @@ public class GameModel {
 	
 	
 	private void moveBoxLeftToGoal() {
+		
+		char tmp = (this.model[getRow()][getCol()] == '&') ? '!' : ' ' ;
 
 		this.model[getRow()][getCol()-2] = '@';
 		this.model[getRow()][getCol()-1] = '^';
-		this.model[getRow()][getCol()] = ' '; // bug if pushing box up onto goal square while player is '&'???
+		this.model[getRow()][getCol()] = tmp; 
 		
 		this.player_location.move(getRow(),getCol()-1);
 		
@@ -632,7 +639,7 @@ public class GameModel {
 	private void moveBoxLeftOffGoal() {
 		
 		if(isObstacle(this.model[getRow()][getCol()-1])) return;
-		
+
 		this.model[getRow()][getCol()-2] = '#';
 		this.model[getRow()][getCol()-1] = '&';
 		this.model[getRow()][getCol()] = ' ';
@@ -646,7 +653,7 @@ public class GameModel {
 	public void moveBoxLeftWhenOnGoal() {
 		
 		if(isObstacle(this.model[getRow()][getCol()-2])) return;
-		
+
 		this.model[getRow()][getCol()-2] = '#';
 		this.model[getRow()][getCol()-1] = '^';
 		this.model[getRow()][getCol()] = '!';
@@ -665,7 +672,7 @@ public class GameModel {
 			return;
 			
 		}else if(this.model[getRow()][getCol()] == '&') {
-			
+
 			moveBoxRightWhenOnGoal();
 			return;
 			
@@ -680,10 +687,12 @@ public class GameModel {
 	}
 	
 	private void moveBoxRightToGoal() {
+		
+		char tmp = (this.model[getRow()][getCol()] == '&') ? '!' : ' ' ;
 
 		this.model[getRow()][getCol()+2] = '@';
 		this.model[getRow()][getCol()+1] = '^';
-		this.model[getRow()][getCol()] = ' '; 
+		this.model[getRow()][getCol()] = tmp; 
 		
 		this.player_location.move(getRow(),getCol()+1);
 		
@@ -694,7 +703,7 @@ public class GameModel {
 	private void moveBoxRightOffGoal() {
 		
 		if(isObstacle(this.model[getRow()][getCol()+2])) return;
-		
+
 		this.model[getRow()][getCol()+2] = '#';
 		this.model[getRow()][getCol()+1] = '&';
 		this.model[getRow()][getCol()] = ' ';
@@ -751,7 +760,8 @@ public class GameModel {
 	public static void main(String[] args) {
 		
 		GameModel m = new GameModel(); 
-		m.open_file("test3.txt");
+		m.open_file("test2.txt");
+		
 	}
 	
 
