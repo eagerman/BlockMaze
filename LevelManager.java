@@ -7,27 +7,51 @@ import javax.swing.*;
 public class LevelManager {
 	
 	private ArrayList<Level> levels;
-	final File levels_folder;
+	private Level current_level;
+	private File levels_folder;
 	private int num_levels;
 	private int level_counter;
 	private int rows;
 	private int cols;
 	
-	public LevelManager() {
+	public LevelManager() throws IOException {
 		
 		this.level_counter = 0;
 		this.levels = new ArrayList<Level>();
-		this.levels_folder = new File("../levels/");
+		String level_path = Paths.get("").toAbsolutePath().getParent().toString();
+		System.out.println("Level path is "+level_path);
+		this.levels_folder = new File(level_path+"/game/levels");
 		read_all_levels(this.levels_folder);
 		this.num_levels = this.levels.size();
+		files_dbug();//////
 		
 	}
 	
-	public char[][] get_next_level_model() {
+	public void files_dbug() {
 		
-		if(this.level_counter == this.num_levels-1) return null;
+		for(Level l: this.levels) System.out.println("NUm goals is "+l.get_num_goals());
 		
-		char[][] next = this.levels.get(this.level_counter+1).get_level();
+	}
+	
+	public int get_curr_rows() {
+
+		return this.current_level.get_rows();
+		
+	}
+
+	public int get_curr_cols() {
+		
+		return this.current_level.get_cols();
+		
+	}
+	
+	public Level get_next_level() {
+		
+		if(this.level_counter == this.num_levels) return null;
+		
+		this.current_level = this.levels.get(this.level_counter);
+		
+		Level next = current_level;
 		
 		this.level_counter++;
 		
@@ -47,17 +71,20 @@ public class LevelManager {
 		
 	}
 	
-	public void read_all_levels(final File folder) {
+	public void read_all_levels(File folder) throws IOException {
+		
+    	System.out.println("Looking at folder "+folder.getCanonicalPath());
 		 
-	    for (final File filename : folder.listFiles()) {
+	    for (File filename : folder.listFiles()) {
 
-	    	open_file(filename.getPath());
+	    	System.out.println("Opening "+filename);
+	    	open_file(filename.toPath().toString());
 	        
 	    }
 	    
 	}
 	
-	public void init_levels() {
+	public void init_levels() throws IOException {
 
 		read_all_levels(levels_folder);
 		
@@ -134,12 +161,17 @@ public class LevelManager {
 	public void populate_level(char[][] level) {
 		
 		ArrayList<Point> goal_locations = new ArrayList<Point>();
+		Point player_location = new Point();
 		int goals = 0;
 		char[][] model = new char[this.rows][this.cols];
 		
 		for(int i=0; i<this.rows; i++) {
 			
 			for(int j=0; j<this.cols; j++) {
+				
+				if(level[i][j] == '^') 
+					
+					player_location.move(i, j);
 
 				
 				if(level[i][j] == '!') {
@@ -155,13 +187,13 @@ public class LevelManager {
 			
 		}
 		
-		store_level(model,goals,goal_locations);
+		store_level(model,goals,goal_locations,this.rows,this.cols,player_location);
 		
 	}
 	
-	private void store_level(char[][] model, int goal_count, ArrayList<Point> goals) {
+	private void store_level(char[][] model, int goal_count, ArrayList<Point> goals, int rows, int cols, Point p) {
 		
-		Level new_level = new Level(model,goal_count,goals);
+		Level new_level = new Level(model,goal_count,goals,rows,cols,p);
 		this.levels.add(new_level);
 		
 	}
