@@ -148,7 +148,7 @@ public class GameView extends JFrame {
 
             } else if (key == KeyEvent.VK_UP) {
 
-            	//System.out.println("up");
+            //	System.out.println("up");
             	model.update_player_position(0);
 
             } else if (key == KeyEvent.VK_DOWN) {
@@ -159,7 +159,11 @@ public class GameView extends JFrame {
 
                // restartLevel();   
             	
-            }
+            } else if (key == KeyEvent.VK_N) {
+
+                model.init_game_model();   
+             	
+             } 
 
         }
     }
