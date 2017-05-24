@@ -1,3 +1,5 @@
+package dg;
+
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +16,7 @@ public class GameModel {
 	private Point player_location;
 	private ArrayList<Point> goal_locations;
 	private int goals;
-	private GameView view;
+	protected GameView view;
 	private int rows;
 	private int cols; 
 	
@@ -26,6 +28,8 @@ public class GameModel {
 		//this.controls = new GameController(this); //////////////////
 
 	}
+	
+	//public GameView 
 	
 	public void init_game_model() {
 		

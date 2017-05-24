@@ -1,10 +1,11 @@
+package dg;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class GameView extends JFrame {
+public class GameView extends JPanel {
 
 	private static final long serialVersionUID = 1L; 
 	private JPanel game_panel;
@@ -24,7 +25,7 @@ public class GameView extends JFrame {
 		Font myfont = new Font("Arial", 1, 20);
 		this.level_won.setFont(myfont);
 		
-		addKeyListener(new kb_input());
+		//addKeyListener(new kb_input());
 		setFocusable(true);
 		setBackground(Color.GREEN);
 		initTiles(model);
@@ -86,10 +87,9 @@ public class GameView extends JFrame {
 	}
 	
 	public void level_done() {
-		
+		this.removeAll();
 		add(this.level_won);
 		this.level_won.setPreferredSize(new Dimension(300,300));
-		setContentPane(this.level_won);
 		
 	}
 	
@@ -97,31 +97,30 @@ public class GameView extends JFrame {
 		
 		if(!this.model.game_won()) {
 
-		this.game_panel = new JPanel(new GridLayout(this.rows,this.cols)); 
-		
-			for(int i=0; i < this.rows; i++) {
+			this.removeAll();
+			this.setLayout(new GridLayout(this.rows,this.cols));
 			
+			for(int i=0; i < this.rows; i++) {
+				
 				for(int j=0; j < this.cols; j++) {
 
-					this.game_panel.add(this.tiles[i][j]);
-				
+					this.add(this.tiles[i][j]);
+					
 				}
-			
+				
 			}
 		
-			getContentPane().add(this.game_panel);
-		
 		}else{
-			
+
 			level_done();
 			
 		}
-        pack();
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-		
-		setVisible(true);
+//        pack();
+//
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        setLocationRelativeTo(null);
+//		
+//		setVisible(true);
 		
 	}
 	
@@ -137,18 +136,18 @@ public class GameView extends JFrame {
 
             if (key == KeyEvent.VK_LEFT) {
  
-            	//System.out.println("LEFT");
+            	System.out.println("LEFT");
             	model.update_player_position(1);
 
             } else if (key == KeyEvent.VK_RIGHT) {
             	
-            	//System.out.println("RIGHT");
+            	System.out.println("RIGHT");
             	model.update_player_position(3);
 
 
             } else if (key == KeyEvent.VK_UP) {
 
-            //	System.out.println("up");
+            	System.out.println("up");
             	model.update_player_position(0);
 
             } else if (key == KeyEvent.VK_DOWN) {
@@ -159,11 +158,7 @@ public class GameView extends JFrame {
 
                // restartLevel();   
             	
-            } else if (key == KeyEvent.VK_N) {
-
-                model.init_game_model();   
-             	
-             } 
+            }
 
         }
     }

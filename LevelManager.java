@@ -1,3 +1,4 @@
+package dg;
 import java.awt.Point;
 import java.io.*;
 import java.nio.file.*;
@@ -20,7 +21,7 @@ public class LevelManager {
 		this.levels = new ArrayList<Level>();
 		String level_path = Paths.get("").toAbsolutePath().getParent().toString();
 		System.out.println("Level path is "+level_path);
-		this.levels_folder = new File(level_path+"/game/levels");
+		this.levels_folder = new File(level_path+"/dg/src/levels");
 		read_all_levels(this.levels_folder);
 		this.num_levels = this.levels.size();
 		files_dbug();//////
@@ -56,6 +57,12 @@ public class LevelManager {
 		this.level_counter++;
 		
 		return next;
+		
+	}
+	
+	public Level reload_current_level() {
+		
+		return this.current_level;
 		
 	}
 	
