@@ -1,7 +1,8 @@
-package dg;
+package game;
 
 import java.util.*;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
@@ -16,7 +17,7 @@ public class GameModel {
 	private Point player_location;
 	private ArrayList<Point> goal_locations;
 	private int goals;
-	protected GameView view;
+	private GameView view;
 	private int rows;
 	private int cols; 
 	
@@ -28,8 +29,6 @@ public class GameModel {
 		//this.controls = new GameController(this); //////////////////
 
 	}
-	
-	//public GameView 
 	
 	public void init_game_model() {
 		
@@ -265,19 +264,18 @@ public class GameModel {
 		if(isBox(this.model[getRow()-1][getCol()])) {
 			
 			updateBoxPosition(0);
-			return;
-			
+			return;			
 		}else if(isBoxOnGoal(this.model[getRow()-1][getCol()])) {
 			
 			moveBoxUpOffGoal();
 			return;
 			
-		}else if(isGoal(this.model[getRow()-1][getCol()])) {
+		}else if(isGoal(this.model[getRow()-1][getCol()]) && !isPlayerOnGoal()) {
 			
 			playerUpOntoGoal();
 			return;
 			
-		}else if(this.goal_locations.contains(new Point(getRow(),getCol()))) {
+		}else if(isPlayerOnGoal()) {
 			
 			playerUpOffGoal();
 			return;
@@ -322,12 +320,12 @@ public class GameModel {
 			moveBoxDownOffGoal(); //TODO
 			return;
 			
-		}else if(isGoal(this.model[getRow()+1][getCol()])) {
+		}else if(isGoal(this.model[getRow()+1][getCol()]) && !isPlayerOnGoal()) {
 			
 			playerDownOntoGoal();
 			return;
 			
-		}else if(this.goal_locations.contains(new Point(getRow(),getCol()))) {
+		}else if(isPlayerOnGoal()){
 			
 			playerDownOffGoal();
 			return;
@@ -350,10 +348,14 @@ public class GameModel {
 	
 	private void playerDownOffGoal() { 
 		
-		this.model[getRow()+1][getCol()] = '^';
+		System.out.println("playerDownOffGoal");
+		if (this.model[getRow()+1][getCol()] == '!' ){
+			this.model[getRow()+1][getCol()] = '&';
+		} else {
+			this.model[getRow()+1][getCol()] = '^';
+		}
 		this.model[getRow()][getCol()] = '!';
-		this.player_location.move(getRow()+1, getCol());
-		
+		this.player_location.move(getRow()+1, getCol());	
 	}
 	
 	private void moveLeft() {
@@ -367,15 +369,15 @@ public class GameModel {
 			
 		}else if(isBoxOnGoal(this.model[getRow()][getCol()-1])) {
 			
-			moveBoxLeftOffGoal(); //TODO
+			moveBoxLeftOffGoal(); 
 			return;
 			
-		}else if(isGoal(this.model[getRow()][getCol()-1])) {
+		}else if(isGoal(this.model[getRow()][getCol()-1]) && !isPlayerOnGoal()) {
 
 			playerLeftOntoGoal();
 			return;
 			
-		}else if(this.goal_locations.contains(new Point(getRow(),getCol()))) {
+		}else if(isPlayerOnGoal()) {
 			
 			playerLeftOffGoal();
 			return;
@@ -395,17 +397,19 @@ public class GameModel {
 		this.model[getRow()][getCol()-1] = '&';
 		this.model[getRow()][getCol()] = ' ';
 		this.player_location.move(getRow(), getCol()-1);
-		
 	}
 	
 	private void playerLeftOffGoal() { 
 		
 		System.out.println("LEFT OFF GOAL");
 		
-		this.model[getRow()][getCol()-1] = '^';
-		this.model[getRow()][getCol()] = '!';
-		this.player_location.move(getRow(), getCol()-1);
-		
+		if ( this.model[getRow()][getCol()-1] == '!'){
+			this.model[getRow()][getCol()-1] = '&';
+		} else {
+			this.model[getRow()][getCol()-1] = '^';
+		}
+			this.model[getRow()][getCol()] = '!';
+			this.player_location.move(getRow(), getCol()-1);
 	}
 	
 	private void moveRight() {
@@ -422,12 +426,12 @@ public class GameModel {
 			moveBoxRightOffGoal(); //TODO
 			return;
 			
-		}else if(isGoal(this.model[getRow()][getCol()+1])) {
+		}else if(isGoal(this.model[getRow()][getCol()+1]) && !isPlayerOnGoal()) {
 			
 			playerRightOntoGoal();
 			return;
 			
-		}else if(this.goal_locations.contains(new Point(getRow(),getCol()))) {
+		}else if(isPlayerOnGoal()) {
 			
 			playerRightOffGoal();
 			return;
@@ -441,7 +445,7 @@ public class GameModel {
 	}
 	
 	private void playerRightOntoGoal() { 
-		
+		System.out.println("player Right ONTO Goal");
 		this.model[getRow()][getCol()+1] = '&';
 		this.model[getRow()][getCol()] = ' ';
 		this.player_location.move(getRow(), getCol()+1);
@@ -449,7 +453,7 @@ public class GameModel {
 	}
 	
 	private void playerRightOffGoal() { 
-		
+		System.out.println("player Right OFF Goal");
 		this.model[getRow()][getCol()+1] = '^';
 		this.model[getRow()][getCol()] = '!';
 		this.player_location.move(getRow(), getCol()+1);
@@ -475,10 +479,18 @@ public class GameModel {
 		
 	}
 	
-	private boolean isPlayerOnGoal(char ch) {
+	private boolean isPlayerOnGoal() {
 		
-		return ch == '&';
+		return this.goal_locations.contains(new Point(getRow(),getCol()));
 		
+	}
+	
+	private void keepGoals(){
+		if (isPlayerOnGoal()){
+			this.model[getRow()][getCol()] = '!';				
+		} else {
+			this.model[getRow()][getCol()] = ' ';
+		}
 	}
 	
 	private void updateBoxPosition(int value) { //0=up, 1=left, 2=down, 3=right
@@ -539,6 +551,7 @@ public class GameModel {
 	
 	private void moveBoxUpToGoal() {
 		
+		if (this.model[getRow()-2][getCol()] == '@') return;
 		char tmp = (this.model[getRow()][getCol()] == '&') ? '!' : ' ' ;
 
 		this.model[getRow()-2][getCol()] = '@';
@@ -554,15 +567,19 @@ public class GameModel {
 	private void moveBoxUpOffGoal() {
 		
 		if(isObstacle(this.model[getRow()-2][getCol()])) return;
+		if (this.model[getRow()-2][getCol()] == '@') return;
 		
-		this.model[getRow()-2][getCol()] = '#';
+		if (this.model[getRow()-2][getCol()] == '!'){
+			this.model[getRow()-2][getCol()] = '@';
+		} else if (this.model[getRow()-2][getCol()] == ' ') {
+			this.model[getRow()-2][getCol()] = '#';
+		} 
 		this.model[getRow()-1][getCol()] = '&';
-		this.model[getRow()][getCol()] = ' ';
+		keepGoals();
 		
 		this.player_location.move(getRow()-1,getCol());
 		
-		this.goals++;
-		
+		this.goals++;		
 	}
 	
 	public void moveBoxUpWhenOnGoal() {
@@ -604,6 +621,7 @@ public class GameModel {
 
 	private void moveBoxDownToGoal() {
 		
+		if (this.model[getRow()+2][getCol()] == '@') return;
 		char tmp = (this.model[getRow()][getCol()] == '&') ? '!' : ' ' ;
 
 		this.model[getRow()+2][getCol()] = '@';
@@ -619,15 +637,20 @@ public class GameModel {
 	private void moveBoxDownOffGoal() {
 		
 		if(isObstacle(this.model[getRow()+2][getCol()])) return;
+		if (this.model[getRow()+2][getCol()] == '@') return;
 		
-		this.model[getRow()+2][getCol()] = '#';
+		if (this.model[getRow()+2][getCol()] == '!'){
+			this.model[getRow()+2][getCol()] = '@';
+
+		} else if (this.model[getRow()+2][getCol()] == ' ') {
+			this.model[getRow()+2][getCol()] = '#';
+		}
 		this.model[getRow()+1][getCol()] = '&';
-		this.model[getRow()][getCol()] = ' ';
+		keepGoals();
 		
 		this.player_location.move(getRow()+1,getCol());
 		
 		this.goals++;
-		
 	}
 	
 	public void moveBoxDownWhenOnGoal() {
@@ -669,6 +692,7 @@ public class GameModel {
 	
 	private void moveBoxLeftToGoal() {
 		
+		if (this.model[getRow()][getCol()-2] == '@') return;
 		char tmp = (this.model[getRow()][getCol()] == '&') ? '!' : ' ' ;
 
 		this.model[getRow()][getCol()-2] = '@';
@@ -683,11 +707,18 @@ public class GameModel {
 
 	private void moveBoxLeftOffGoal() {
 		
-		if(isObstacle(this.model[getRow()][getCol()-1])) return;
+		System.out.println("box left OFF Goal");
+		if(isObstacle(this.model[getRow()][getCol()-2])) return;
+		if (this.model[getRow()][getCol()-2] == '@') return;
+		
+		if ( this.model[getRow()][getCol()-2] == '!' ){	//into another goal
+			this.model[getRow()][getCol()-2] = '@';
+		} else if(this.model[getRow()][getCol()-2] == ' ') { //into empty space
+	    	this.model[getRow()][getCol()-2] = '#';
 
-		this.model[getRow()][getCol()-2] = '#';
-		this.model[getRow()][getCol()-1] = '&';
-		this.model[getRow()][getCol()] = ' ';
+	    } 
+    	this.model[getRow()][getCol()-1] = '&';
+    	keepGoals();
 		
 		this.player_location.move(getRow(),getCol()-1);
 		
@@ -698,10 +729,19 @@ public class GameModel {
 	public void moveBoxLeftWhenOnGoal() {
 		
 		if(isObstacle(this.model[getRow()][getCol()-2])) return;
+		if (this.model[getRow()][getCol()-2] == '@') return;
 
-		this.model[getRow()][getCol()-2] = '#';
-		this.model[getRow()][getCol()-1] = '^';
-		this.model[getRow()][getCol()] = '!';
+		if ( this.model[getRow()][getCol()-2] == '!' ){
+			this.model[getRow()][getCol()-2] = '@';
+			this.model[getRow()][getCol()-1] = '^';
+			this.model[getRow()][getCol()] = '!';
+		} else if ( this.model[getRow()][getCol()-2] == ' ' ){
+			this.model[getRow()][getCol()-2] = '#';
+			this.model[getRow()][getCol()-1] = '^';
+			this.model[getRow()][getCol()] = '!';
+		} else {
+			
+		}
 		
 		this.player_location.move(getRow(),getCol()-1);
 		
@@ -733,6 +773,7 @@ public class GameModel {
 	
 	private void moveBoxRightToGoal() {
 		
+		if (this.model[getRow()][getCol()+2] == '@') return;
 		char tmp = (this.model[getRow()][getCol()] == '&') ? '!' : ' ' ;
 
 		this.model[getRow()][getCol()+2] = '@';
@@ -748,15 +789,20 @@ public class GameModel {
 	private void moveBoxRightOffGoal() {
 		
 		if(isObstacle(this.model[getRow()][getCol()+2])) return;
-
-		this.model[getRow()][getCol()+2] = '#';
+		if (this.model[getRow()][getCol()+2] == '@') return;
+		
+		if (this.model[getRow()][getCol()+2] == '!'){
+			this.model[getRow()][getCol()+2] = '@';
+		} else if (this.model[getRow()][getCol()+2] == ' ' ){
+			this.model[getRow()][getCol()+2] = '#';
+		} 
+		
 		this.model[getRow()][getCol()+1] = '&';
-		this.model[getRow()][getCol()] = ' ';
+		keepGoals();
 		
 		this.player_location.move(getRow(),getCol()+1);
 		
 		this.goals++;
-		
 	}
 	
 	public void moveBoxRightWhenOnGoal() {
@@ -802,12 +848,10 @@ public class GameModel {
 		
 	}
 	
-	public static void main(String[] args) throws IOException {
-		
+	public static void main(String[] args) throws IOException {		
 		GameModel m = new GameModel(); 
-		//m.open_file("test2.txt");
-		m.init_game_model();
-		
+		//m.open_file("test3.txt");
+		m.init_game_model();		
 	}
 	
 
