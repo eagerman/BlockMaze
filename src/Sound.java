@@ -32,10 +32,10 @@ public class Sound extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == tempButton){
 			if(!isplay()){
-				soundLoad();tempButton.setLabel("Close Music");
+				soundLoad();tempButton.setLabel("Stop Music");
 				
 			} else {
-				stopMusic();tempButton.setLabel("Open Music");
+				stopMusic();tempButton.setLabel("Play Music");
 			}
 		}
 		panel.requestFocus();

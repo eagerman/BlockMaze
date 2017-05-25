@@ -28,14 +28,17 @@ public class SplashScreen extends JFrame{
 	//private JLabel info-test;
 
     public SplashScreen() throws IOException{
-    	
+
+        ImageIcon webIcon = new ImageIcon("resources/images/box.png");
+        setIconImage(webIcon.getImage());
+  
 		this.level_won = new JLabel("LEVEL COMPLETE!", SwingConstants.CENTER);
 		this.level_won.setOpaque(true);
 
 		Font myfont = new Font("Arial", 1, 20);
 		this.level_won.setFont(myfont);
 
-    	bgImage = Toolkit.getDefaultToolkit().createImage("resources/images/SimpleCrate.png");
+    	bgImage = Toolkit.getDefaultToolkit().createImage("resources/images/main.png");
     	model = new GameModel(); 
 		//addKeyListener(new ka());
     	setBackground(Color.BLACK);
@@ -44,12 +47,12 @@ public class SplashScreen extends JFrame{
     
     private void makeInfoScreen(int source) {
     	
-    	String how_to = "<html>This is how you play the game etc<br></html>";
+    	String how_to = "<html><h3>How to play the game<h3><br><tr><li>Use arrows to move the boxes to goals<li></html>";
     	JLabel info_text = new JLabel(how_to);
     	info_text.setPreferredSize(new Dimension(150,150));
     	
     	info = new JPanel();
-    	info.setPreferredSize(new Dimension(200,200));
+    	info.setPreferredSize(new Dimension(800,600));
     	info.setFont(new Font("Serif", Font.PLAIN, 14));
     	
     	JButton back_to_menu;
@@ -90,7 +93,7 @@ public class SplashScreen extends JFrame{
     	JButton btnReset = new JButton("Reset");
     	JButton btnPrevLev = new JButton("Prev Level");
     	JButton btnNextLev = new JButton("Next Level");
-    	JButton btnmic = new JButton("Close Music");
+    	JButton btnmic = new JButton("Stop Music");
     	JButton btnInfo = new JButton("Help");
     	JButton back_to_menu = new JButton("Back");
     	sound = new Sound(controls, btnmic, "Color X.wav");
@@ -102,7 +105,7 @@ public class SplashScreen extends JFrame{
 
     	if(!soundMenu.isplay()){
     		sound.stopMusic();
-    		btnmic.setLabel("Open Music");
+    		btnmic.setLabel("Play Music");
     	}
     	
     	btnReset.addActionListener((ActionEvent event) -> {
@@ -161,6 +164,7 @@ public class SplashScreen extends JFrame{
     	model.view.addKeyListener(new ka());
     	gamescreen.add(controls, BorderLayout.EAST);
     	gamescreen.add(model.view, BorderLayout.CENTER);
+    	
     	//getContentPane().add(model.view.game_panel);
     	setVisible(true);
     	
@@ -181,15 +185,15 @@ public class SplashScreen extends JFrame{
         
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));	
         menuPanel.setBackground(new Color(0,0,0,0));
+ 
+        ImageIcon icon = new ImageIcon("resources/images/main-menu-buttons.png");
+        Font myFont = new Font ("Courier New", 1, 20);
         
-        ImageIcon infoIcon = new ImageIcon("resources/images/questionMark2.png");
-        ImageIcon newgameIcon = new ImageIcon("resources/images/tick.png");
-        ImageIcon quitIcon = new ImageIcon("resources/images/Closepre.png");
-
-        JButton quitBtn = new JButton("Quit", quitIcon);
-        JButton musBtn = new JButton("Close Music");
-        JButton infoBtn = new JButton("Info", infoIcon);
-        JButton newgameBtn = new JButton("Play", newgameIcon);
+        JButton newgameBtn = createMainLabel("New Gmae", myFont, icon);
+        JButton infoBtn = createMainLabel("Info", myFont, icon);
+        JButton musBtn = createMainLabel("Play Music", myFont, icon);
+        JButton quitBtn = createMainLabel("Quit", myFont, icon);
+  
         
         soundMenu = new Sound(menuPanel, musBtn, "all for you.wav");
         
@@ -213,35 +217,35 @@ public class SplashScreen extends JFrame{
             System.exit(0);
         });
 
-        menuPanel.setPreferredSize(new Dimension(150, 250));
+        menuPanel.setPreferredSize(new Dimension(900, 900));
         
-        //group layout actually has a linkSize method that could save me the bother here
-        
-        quitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        quitBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
-        quitBtn.setPreferredSize(new Dimension(25, 25));
-        musBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        musBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
-        musBtn.setPreferredSize(new Dimension(25, 25));
-        infoBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        infoBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
-        infoBtn.setPreferredSize(new Dimension(25, 25));
-        newgameBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        newgameBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
-        newgameBtn.setPreferredSize(new Dimension(25, 25));
- 
-        menuPanel.add(Box.createRigidArea(new Dimension(50, 50)));
+     
+        menuPanel.add(Box.createRigidArea(new Dimension(50, 70)));
         menuPanel.add(newgameBtn);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         menuPanel.add(musBtn);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         menuPanel.add(infoBtn);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         menuPanel.add(quitBtn);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         
         return menuPanel;
     	
+    }
+    
+    private JButton createMainLabel(String txt, Font mFont, ImageIcon ic){
+        JButton label = new JButton();
+//        label.setPreferredSize(new Dimension(40, 60));
+        label.setBackground(new Color(0,0,0,0));
+        label.setIcon(ic);
+        label.setText(txt);
+        label.setFont(mFont);
+        label.setHorizontalTextPosition(JLabel.CENTER);
+        label.setVerticalTextPosition(JLabel.CENTER);
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        label.setAlignmentY(Component.LEFT_ALIGNMENT);
+        return label;
     }
 
     private void initUI() {
@@ -251,7 +255,7 @@ public class SplashScreen extends JFrame{
         
         JPanel menuPanel = initMenu();
         
-        backgroundPanel.setPreferredSize(new Dimension(300,300));
+        backgroundPanel.setPreferredSize(new Dimension(800,600));
         backgroundPanel.add(menuPanel);
 
         backgroundPanel.setBorder(new EmptyBorder(new Insets(20, 20, 20, 20)));

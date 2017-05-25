@@ -21,7 +21,7 @@ public class LevelManager {
 		this.levels = new ArrayList<Level>();
 		String level_path = Paths.get("").toAbsolutePath().getParent().toString();
 		System.out.println("Level path is "+level_path);
-		this.levels_folder = new File(level_path+"/Two/src/levels");
+		this.levels_folder = new File(level_path+"/gamefinal/resources/levels");
 		read_all_levels(this.levels_folder);
 		this.num_levels = this.levels.size();
 		files_dbug();//////
