@@ -33,6 +33,10 @@ public class SplashScreen extends JFrame{
 		Font myfont = new Font("Arial", 1, 20);
 		this.level_won.setFont(myfont);
 
+
+        ImageIcon webIcon = new ImageIcon("resources/images/box.png");
+        setIconImage(webIcon.getImage());
+
     	bgImage = Toolkit.getDefaultToolkit().createImage("resources/images/SimpleCrate.png");
     	model = new GameModel(); 
 		//addKeyListener(new ka());
