@@ -5,11 +5,11 @@ import javax.swing.JOptionPane;
 public class SetTimer implements Runnable {
 
 	Thread time;
-	JButton lbTime;
+	JLabel lbTime;
 	int mcnt=0,scnt=0;
-	String str = "";
+	String str = "   	   ";
 	
-	public SetTimer(JButton lbTime){
+	public SetTimer(JLabel lbTime){
 		this.lbTime = lbTime;
 		time = new Thread(this);
 		reset();
@@ -18,7 +18,7 @@ public class SetTimer implements Runnable {
 	
 	public void reset(){
 		mcnt=01;	scnt=01;
-		str = "01:00";
+		str = "  	    01:00";
 		display();
 	}
 	
@@ -27,8 +27,8 @@ public class SetTimer implements Runnable {
 	}
 
 	public void setTimeCounter() {
-		str = "";
-		if(mcnt<10){str = "0"+mcnt;}else{str += ":"+mcnt;}
+		str = "   	   ";
+		if(mcnt<10){str += "0"+mcnt;}else{str += ":"+mcnt;}
 		if(scnt<10){str += ":0"+scnt;}else{str += ":"+scnt;}
 	}
 

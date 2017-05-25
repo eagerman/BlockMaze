@@ -1,4 +1,3 @@
-
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
@@ -28,15 +27,11 @@ public class GameModel {
 
 	}
 	
-	public void level_complete() {
-		
-		this.levels.set_level_as_won();
-		
-	}
+	//public GameView 
 	
 	public void init_game_model() {
 		
-		this.current = this.levels.load_first_level(); ///ADDED 2NITE
+		this.current = this.levels.get_next_level();
 		
 		if(this.current == null) return;
 		
@@ -56,25 +51,6 @@ public class GameModel {
 	public void reload_level() {
 		
 		this.current = this.levels.reload_current_level();
-		this.goal_locations = this.current.get_goal_locations();
-		char[][] game_model = this.current.get_level();
-		this.rows = this.current.get_rows();
-		this.cols = this.current.get_cols();
-		this.model = new char[this.rows][this.cols];
-		copy_model(game_model);
-		this.goals = this.current.get_num_goals();
-		this.player_location = new Point(this.current.get_player_pos().x,this.current.get_player_pos().y);
-		this.view = new GameView(this.model,this.rows,this.cols,this); //currently creates new window as GameView is JFrame
-		//init_view(this.model);
-		
-	}
-	
-	public void next_level() {
-		
-		this.current = this.levels.get_next_level(); 
-		
-		if(this.current == null) return;
-		
 		this.goal_locations = this.current.get_goal_locations();
 		char[][] game_model = this.current.get_level();
 		this.rows = this.current.get_rows();

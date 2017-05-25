@@ -1,5 +1,3 @@
-
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -22,7 +20,11 @@ public class SplashScreen extends JFrame{
 	private JPanel menu;
 	private GameModel model; 
 	public JLabel level_won;
-
+	private Sound soundMenu;
+	private Sound sound;
+	private Movement move;
+	private final int MENU_PANEL = 2;
+	private final int GAME_PANEL = 3;
 	//private JLabel info-test;
 
     public SplashScreen() throws IOException{
@@ -33,10 +35,6 @@ public class SplashScreen extends JFrame{
 		Font myfont = new Font("Arial", 1, 20);
 		this.level_won.setFont(myfont);
 
-
-        ImageIcon webIcon = new ImageIcon("resources/images/box.png");
-        setIconImage(webIcon.getImage());
-
     	bgImage = Toolkit.getDefaultToolkit().createImage("resources/images/SimpleCrate.png");
     	model = new GameModel(); 
 		//addKeyListener(new ka());
@@ -44,7 +42,7 @@ public class SplashScreen extends JFrame{
         initUI();
     }
     
-    private void makeInfoScreen() {
+    private void makeInfoScreen(int source) {
     	
     	String how_to = "<html>This is how you play the game etc<br></html>";
     	JLabel info_text = new JLabel(how_to);
@@ -54,11 +52,23 @@ public class SplashScreen extends JFrame{
     	info.setPreferredSize(new Dimension(200,200));
     	info.setFont(new Font("Serif", Font.PLAIN, 14));
     	
-    	JButton back_to_menu = new JButton("Back");
+    	JButton back_to_menu;
+    	if( source == MENU_PANEL){
+    		back_to_menu = new JButton("Back To Menu");
+    	} else {
+    		back_to_menu = new JButton("Back To Game");
+    	}
     	
         back_to_menu.addActionListener((ActionEvent event) -> {
-        	makeGameScreen();
-        	setContentPane(this.menu);
+        	if(source == MENU_PANEL){
+        		setContentPane(this.menu);
+        	} else {
+        		makeGameScreen();
+            	setContentPane(gamescreen);
+            	model.view.requestFocus();
+        	}
+        	//makeGameScreen();
+        	//setContentPane(this.menu);
         	revalidate();
         	pack();
         });
@@ -71,33 +81,83 @@ public class SplashScreen extends JFrame{
     private void makeGameScreen() {
     	
     	gamescreen = new JPanel(new BorderLayout());
-//    	/gamescreen.setPreferredSize(new Dimension(300,300));
+    	//gamescreen.setPreferredSize(new Dimension(600,500));
     	
-    	JPanel controls = new JPanel();
-    	//JPanel game = new JPanel();
-    	/*
-		model.open_file("test2.txt");
-		model.set_goal_number();
-		model.print_goals();
-    	*/
+    	JPanel controls = new JPanel(new GridLayout(8,1));;
+    	
     	model.init_game_model();
-    	//setContentPane(this.model.get_view())'
-    	ImageIcon down_arrow = new ImageIcon("resources/images/arrow-down.png");
-    	JButton down_action = new JButton(down_arrow);
     	
+    	JButton btnReset = new JButton("Reset");
+    	JButton btnPrevLev = new JButton("Prev Level");
+    	JButton btnNextLev = new JButton("Next Level");
+    	JButton btnmic = new JButton("Close Music");
+    	JButton btnInfo = new JButton("Help");
     	JButton back_to_menu = new JButton("Back");
+    	sound = new Sound(controls, btnmic, "Color X.wav");
+    	JLabel timer = new JLabel("01:00");
+    	//SetTimer t = 
+    	new SetTimer(timer);
+    	JLabel movement = new JLabel("     Movement: 0");
+    	move = new Movement(movement);
+
+    	if(!soundMenu.isplay()){
+    		sound.stopMusic();
+    		btnmic.setLabel("Open Music");
+    	}
+    	
+    	btnReset.addActionListener((ActionEvent event) -> {
+    		System.out.println("RELOAD");
+            model.prev_level();  
+            reset_game_view();
+            makeGameScreen();
+        	setContentPane(gamescreen);
+        	model.view.requestFocus();
+        });
+    	
+    	btnPrevLev.addActionListener((ActionEvent event) -> {
+    		System.out.println("PREV LEVEL");
+            model.prev_level(); 
+            model.prev_level();
+            reset_game_view();
+            makeGameScreen();
+        	setContentPane(gamescreen);
+        	model.view.requestFocus();
+        });
+    	
+    	btnNextLev.addActionListener((ActionEvent event) -> {
+    		System.out.println("NEXT LEVEL");
+            model.reload_level(); 
+            reset_game_view();
+            makeGameScreen();
+        	setContentPane(gamescreen);
+        	model.view.requestFocus();
+        });
     	
         back_to_menu.addActionListener((ActionEvent event) -> {
-        	makeGameScreen();
+        	sound.stopMusic();
+        	if(soundMenu.isplay()){soundMenu.aau.loop();}
+        	//makeGameScreen();
         	setContentPane(this.menu);
         	revalidate();
         	pack();
         });
+        
+        btnInfo.addActionListener((ActionEvent event) -> {
+        	makeInfoScreen(GAME_PANEL);
+        	setContentPane(info);
+        	revalidate();
+        	pack();
+        });
 
-    	controls.add(down_action, BorderLayout.NORTH);
-    	controls.add(back_to_menu, BorderLayout.SOUTH);
+        controls.add(timer);
+		controls.add(movement);
+		controls.add(btnReset);
+		controls.add(btnPrevLev);
+		controls.add(btnNextLev);
+		controls.add(btnmic);
+		controls.add(btnInfo);
+		controls.add(back_to_menu);
     	
-    	//game.setBackground(Color.BLUE);
     	model.view.addKeyListener(new ka());
     	gamescreen.add(controls, BorderLayout.EAST);
     	gamescreen.add(model.view, BorderLayout.CENTER);
@@ -105,7 +165,15 @@ public class SplashScreen extends JFrame{
     	setVisible(true);
     	
     }
-
+    
+    private void reset_game_view() {
+    	
+    	gamescreen.add(model.view, BorderLayout.CENTER);
+    	//model.update_view(model.get_model());
+    	//pack();
+    	//setVisible(true);
+    	
+    }
     
     private JPanel initMenu() {
     	
@@ -119,11 +187,15 @@ public class SplashScreen extends JFrame{
         ImageIcon quitIcon = new ImageIcon("resources/images/Closepre.png");
 
         JButton quitBtn = new JButton("Quit", quitIcon);
+        JButton musBtn = new JButton("Close Music");
         JButton infoBtn = new JButton("Info", infoIcon);
         JButton newgameBtn = new JButton("Play", newgameIcon);
         
+        soundMenu = new Sound(menuPanel, musBtn, "all for you.wav");
+        
         newgameBtn.addActionListener((ActionEvent event) -> {
         	makeGameScreen();
+        	soundMenu.aau.stop();
         	setContentPane(gamescreen);
         	model.view.requestFocus();
         	revalidate();
@@ -131,7 +203,7 @@ public class SplashScreen extends JFrame{
         });
         
         infoBtn.addActionListener((ActionEvent event) -> {
-        	makeInfoScreen();
+        	makeInfoScreen(MENU_PANEL);
         	setContentPane(info);
         	revalidate();
         	pack();
@@ -141,13 +213,16 @@ public class SplashScreen extends JFrame{
             System.exit(0);
         });
 
-        menuPanel.setPreferredSize(new Dimension(150, 150));
+        menuPanel.setPreferredSize(new Dimension(150, 250));
         
         //group layout actually has a linkSize method that could save me the bother here
         
         quitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         quitBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
         quitBtn.setPreferredSize(new Dimension(25, 25));
+        musBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        musBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
+        musBtn.setPreferredSize(new Dimension(25, 25));
         infoBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         infoBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
         infoBtn.setPreferredSize(new Dimension(25, 25));
@@ -157,6 +232,8 @@ public class SplashScreen extends JFrame{
  
         menuPanel.add(Box.createRigidArea(new Dimension(50, 50)));
         menuPanel.add(newgameBtn);
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        menuPanel.add(musBtn);
         menuPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         menuPanel.add(infoBtn);
         menuPanel.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -205,43 +282,41 @@ public class SplashScreen extends JFrame{
         }
     }
 
-    
-    private void reset_game_view() {
-    	
-    	gamescreen.add(model.view, BorderLayout.CENTER);
-    	//model.update_view(model.get_model());
-    	//pack();
-    	//setVisible(true);
-    	
-    }
+ 
 
 	class ka extends KeyAdapter {
 
 		@Override
         public void keyPressed(KeyEvent e) {
-
+           if (model.game_won()) { 
+        	   //TODO
+        		level_done();
+            	System.out.println("NEXT LEVEL");
+                model.init_game_model();  
+                reset_game_view();
+            }
             
             int key = e.getKeyCode();
-            
+
 
             if (key == KeyEvent.VK_LEFT) {
- 
+            	if(soundMenu.isplay()){sound.keyboardSound("left");}
             	System.out.println("LEFT");
             	model.update_player_position(1);
 
             } else if (key == KeyEvent.VK_RIGHT) {
-            	
+            	if(soundMenu.isplay()){sound.keyboardSound("right");}
             	System.out.println("RIGHT");
             	model.update_player_position(3);
             	
 
             } else if (key == KeyEvent.VK_UP) {
-
+            	if(soundMenu.isplay()){sound.keyboardSound("up");}
             	System.out.println("up");
             	model.update_player_position(0);
 
             } else if (key == KeyEvent.VK_DOWN) {
-
+            	if(soundMenu.isplay()){sound.keyboardSound("down");}
             	model.update_player_position(2);
 
             } else if (key == KeyEvent.VK_R) {
@@ -254,7 +329,7 @@ public class SplashScreen extends JFrame{
             } else if (key == KeyEvent.VK_N) {
             	
             	System.out.println("NEXT LEVEL");
-                model.next_level();  
+                model.init_game_model();  
                 reset_game_view();
                // return;
                 
@@ -266,14 +341,8 @@ public class SplashScreen extends JFrame{
                 //return;
                 
             }
-            
-            if (model.game_won()) { 
-         	   //TODO
-         		model.level_complete();
-         		model.next_level();  
-         		reset_game_view();
-             }
-            
+            move.addMove();
+            move.displayMove();
             pack();
         	model.view.revalidate();
         	

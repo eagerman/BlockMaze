@@ -1,4 +1,3 @@
-
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -7,6 +6,8 @@ public class Level {
 	private ArrayList<Point> goal_locations;
 	private Point player_at;
 	private char[][] level_model;
+	private int max_moves;
+	private double time_limit;
 	private int num_goals;
 	private int rows;
 	private int cols;

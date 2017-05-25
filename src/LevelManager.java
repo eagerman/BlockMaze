@@ -1,4 +1,3 @@
-
 import java.awt.Point;
 import java.io.*;
 import java.nio.file.*;
@@ -6,7 +5,7 @@ import java.util.*;
 import javax.swing.*;
 
 public class LevelManager {
-
+	
 	private ArrayList<Level> levels;
 	private Level current_level;
 	private boolean[] won;
@@ -22,7 +21,7 @@ public class LevelManager {
 		this.levels = new ArrayList<Level>();
 		String level_path = Paths.get("").toAbsolutePath().getParent().toString();
 		System.out.println("Level path is "+level_path);
-		this.levels_folder = new File(level_path+"/gamefinal/resources/levels");
+		this.levels_folder = new File(level_path+"/Two/src/levels");
 		read_all_levels(this.levels_folder);
 		this.num_levels = this.levels.size();
 		files_dbug();//////
@@ -38,8 +37,6 @@ public class LevelManager {
 	}
 	
 	public void set_level_as_won() {
-		
-		System.out.println("Setting level "+level_counter+" as won");
 		
 		this.won[this.level_counter] = true;
 		
@@ -73,18 +70,11 @@ public class LevelManager {
 		
 	}
 	
-	public Level load_first_level() {
-		
-		this.current_level = this.levels.get(this.level_counter);
-		return this.levels.get(this.level_counter);
-		
-	}
-	
 	public Level get_next_level() {
 		
 		if(this.level_counter == this.num_levels) return this.current_level;
 		
-		this.current_level = this.levels.get(this.level_counter+1);
+		this.current_level = this.levels.get(this.level_counter);
 		
 		Level next = current_level;
 		
@@ -116,7 +106,7 @@ public class LevelManager {
 		
 		return this.current_level;
 		
-	}	//public GameView 
+	}
 	
 	
 	public void read_all_levels(File folder) throws IOException {
