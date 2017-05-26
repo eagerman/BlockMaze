@@ -11,7 +11,6 @@ import javax.swing.border.EmptyBorder;
 
 //import Game1.GameView.kb_input;
 
-
 public class SplashScreen extends JFrame{
 
 	private Image bgImage;
@@ -25,23 +24,26 @@ public class SplashScreen extends JFrame{
 	private Movement move;
 	private final int MENU_PANEL = 2;
 	private final int GAME_PANEL = 3;
+	private Font myfont;
+	private JPanel menuPanel;
 	//private JLabel info-test;
 
     public SplashScreen() throws IOException{
 
         ImageIcon webIcon = new ImageIcon("resources/images/box.png");
         setIconImage(webIcon.getImage());
-  
-		this.level_won = new JLabel("LEVEL COMPLETE!", SwingConstants.CENTER);
-		this.level_won.setOpaque(true);
+        
+//		this.level_won = new JLabel("LEVEL COMPLETE!", SwingConstants.CENTER);
+//		this.level_won.setFont(myfont); 
+//		this.level_won.setOpaque(true);
 
-		Font myfont = new Font("Arial", 1, 20);
-		this.level_won.setFont(myfont);
+		myfont = new Font("Arial", 1, 20);
 
     	bgImage = Toolkit.getDefaultToolkit().createImage("resources/images/main.png");
+    	
     	model = new GameModel(); 
 		//addKeyListener(new ka());
-    	setBackground(Color.BLACK);
+    //	setBackground(Color.BLACK);
         initUI();
     }
     
@@ -81,7 +83,8 @@ public class SplashScreen extends JFrame{
     	
     }
     
-    private void makeGameScreen() {
+    @SuppressWarnings("deprecation")
+	private void makeGameScreen() {
     	
     	gamescreen = new JPanel(new BorderLayout());
     	//gamescreen.setPreferredSize(new Dimension(600,500));
@@ -181,7 +184,7 @@ public class SplashScreen extends JFrame{
     
     private JPanel initMenu() {
     	
-    	JPanel menuPanel = new JPanel();
+    	menuPanel = new JPanel();
         
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));	
         menuPanel.setBackground(new Color(0,0,0,0));
@@ -189,7 +192,7 @@ public class SplashScreen extends JFrame{
         ImageIcon icon = new ImageIcon("resources/images/main-menu-buttons.png");
         Font myFont = new Font ("Courier New", 1, 20);
         
-        JButton newgameBtn = createMainLabel("New Gmae", myFont, icon);
+        JButton newgameBtn = createMainLabel("New Game", myFont, icon);
         JButton infoBtn = createMainLabel("Info", myFont, icon);
         JButton musBtn = createMainLabel("Play Music", myFont, icon);
         JButton quitBtn = createMainLabel("Quit", myFont, icon);
@@ -245,6 +248,10 @@ public class SplashScreen extends JFrame{
         label.setVerticalTextPosition(JLabel.CENTER);
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
         label.setAlignmentY(Component.LEFT_ALIGNMENT);
+        
+        menuPanel.add(label);
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        
         return label;
     }
 
@@ -278,15 +285,13 @@ public class SplashScreen extends JFrame{
     	gamescreen.add(this.level_won, BorderLayout.CENTER);
     	
     }
-    
+
     private class MyPanel extends JPanel{
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
         }
     }
-
- 
 
 	class ka extends KeyAdapter {
 
