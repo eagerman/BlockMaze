@@ -359,55 +359,47 @@ public class SplashScreen extends JFrame{
             	if(soundMenu.isplay()){sound.keyboardSound("left");}
             	System.out.println("LEFT");
             	model.update_player_position(1);
-
+            	move.addMove();
             } else if (key == KeyEvent.VK_RIGHT) {
             	if(soundMenu.isplay()){sound.keyboardSound("right");}
             	System.out.println("RIGHT");
             	model.update_player_position(3);
-            	
+            	move.addMove();
 
             } else if (key == KeyEvent.VK_UP) {
             	if(soundMenu.isplay()){sound.keyboardSound("up");}
             	System.out.println("up");
             	model.update_player_position(0);
-
+            	move.addMove();
             } else if (key == KeyEvent.VK_DOWN) {
             	if(soundMenu.isplay()){sound.keyboardSound("down");}
             	model.update_player_position(2);
-
+            	move.addMove();
             } else if (key == KeyEvent.VK_R) {
-            	
+            	t.reset();
+        		move.resetMovement();
             	System.out.println("RELOAD");
                 model.reload_level(); 
                 reset_game_view();
                 //return;
                 
             } else if (key == KeyEvent.VK_N) {
-            	
+            	t.reset();
+        		move.resetMovement();
             	System.out.println("NEXT LEVEL");
                 model.init_game_model();  
                 reset_game_view();
                // return;
                 
             } else if (key == KeyEvent.VK_P) {
-            	
+            	t.reset();
+        		move.resetMovement();
             	System.out.println("PREV LEVEL");
                 model.prev_level();  
                 reset_game_view();
                 //return;
                 
             }
-            
-			if (model.game_won()) { 
-	        	   //TODO
-	        		model.set_level_done();
-	            	System.out.println("NEXT LEVEL");
-	                model.init_game_model();  
-	                reset_game_view();
-	            }
-            
-            move.addMove();
-            move.displayMove();
             pack();
         	model.view.revalidate();
         	
