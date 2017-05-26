@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+
 //import Game1.GameView.kb_input;
 
 public class SplashScreen extends JFrame{
@@ -22,7 +23,12 @@ public class SplashScreen extends JFrame{
 	public JLabel level_won;
 	private Sound soundMenu;
 	private Sound sound;
+	private SetTimer t;
 	private Movement move;
+	private JPanel controls;
+	private JButton btnmic;
+	private JLabel movement;
+	private JLabel timer;
 	private final int MENU_PANEL = 2;
 	private final int GAME_PANEL = 3;
 	private Font myfont;
@@ -69,6 +75,7 @@ public class SplashScreen extends JFrame{
         	if(source == MENU_PANEL){
         		setContentPane(this.menu);
         	} else {
+        		model.prev_level(); 
         		makeGameScreen();
             	setContentPane(gamescreen);
             	model.view.requestFocus();
@@ -90,22 +97,22 @@ public class SplashScreen extends JFrame{
     	gamescreen = new JPanel(new BorderLayout());
     	//gamescreen.setPreferredSize(new Dimension(600,500));
     	
-    	JPanel controls = new JPanel(new GridLayout(8,1));;
+    	controls = new JPanel(new GridLayout(8,1));;
     	
     	model.init_game_model();
     	
     	JButton btnReset = new JButton("Reset");
     	JButton btnPrevLev = new JButton("Prev Level");
     	JButton btnNextLev = new JButton("Next Level");
-    	JButton btnmic = new JButton("Stop Music");
+    	btnmic = new JButton("Stop Music");
     	JButton btnInfo = new JButton("Help");
     	JButton back_to_menu = new JButton("Back");
-    	sound = new Sound(controls, btnmic, "Color X.wav");
-    	JLabel timer = new JLabel("01:00");
+    	//sound = new Sound(controls, btnmic, "resources/sound/Color X.wav");
+    	//JLabel timer = new JLabel("01:00");
     	//SetTimer t = 
-    	new SetTimer(timer);
-    	JLabel movement = new JLabel("     Movement: 0");
-    	move = new Movement(movement);
+    	//new SetTimer(timer);
+    	//JLabel movement = new JLabel("     Movement: 0");
+    	//move = new Movement(movement);
 
     	if(!soundMenu.isplay()){
     		sound.stopMusic();
@@ -113,6 +120,8 @@ public class SplashScreen extends JFrame{
     	}
     	
     	btnReset.addActionListener((ActionEvent event) -> {
+    		t.reset();
+    		move.resetMovement();
     		System.out.println("RELOAD");
             model.prev_level();  
             reset_game_view();
@@ -122,6 +131,8 @@ public class SplashScreen extends JFrame{
         });
     	
     	btnPrevLev.addActionListener((ActionEvent event) -> {
+    		t.reset();
+    		move.resetMovement();
     		System.out.println("PREV LEVEL");
             model.prev_level(); 
             model.prev_level();
@@ -132,10 +143,24 @@ public class SplashScreen extends JFrame{
         });
     	
     	btnNextLev.addActionListener((ActionEvent event) -> {
+    		t.reset();
+    		move.resetMovement();
     		System.out.println("NEXT LEVEL");
             model.reload_level(); 
             reset_game_view();
             makeGameScreen();
+        	setContentPane(gamescreen);
+        	model.view.requestFocus();
+        });
+    	
+    	btnmic.addActionListener((ActionEvent event) -> {
+    		if(!sound.isplay()){
+				sound.soundLoad();btnmic.setLabel("Close Music");
+			} else {
+				sound.stopMusic();btnmic.setLabel("Open Music");
+			}
+    		model.prev_level();
+    		makeGameScreen();
         	setContentPane(gamescreen);
         	model.view.requestFocus();
         });
@@ -199,11 +224,17 @@ public class SplashScreen extends JFrame{
         JButton quitBtn = createMainLabel("Quit", myFont, icon);
   
         
-        soundMenu = new Sound(menuPanel, musBtn, "all for you.wav");
+        soundMenu = new Sound(menuPanel, "resources/sound/all for you.wav");
         
         newgameBtn.addActionListener((ActionEvent event) -> {
-        	makeGameScreen();
+        	timer = new JLabel("01:00");
+        	t = new SetTimer(timer);
+        	movement = new JLabel("     Movement: 0");
+        	move = new Movement(movement);
+        	sound = new Sound(gamescreen, "resources/sound/Color X.wav");
         	soundMenu.aau.stop();
+        	if(!soundMenu.isplay()){sound.stopMusic();}
+        	makeGameScreen();
         	setContentPane(gamescreen);
         	model.view.requestFocus();
         	revalidate();
@@ -213,6 +244,17 @@ public class SplashScreen extends JFrame{
         infoBtn.addActionListener((ActionEvent event) -> {
         	makeInfoScreen(MENU_PANEL);
         	setContentPane(info);
+        	revalidate();
+        	pack();
+        });
+        
+        musBtn.addActionListener((ActionEvent event) -> {
+    		if(!soundMenu.isplay()){
+				soundMenu.soundLoad();musBtn.setLabel("Close Music");
+			} else {
+				soundMenu.stopMusic();musBtn.setLabel("Open Music");
+			}
+    		setContentPane(this.menu);
         	revalidate();
         	pack();
         });
@@ -286,7 +328,8 @@ public class SplashScreen extends JFrame{
     	setBackground(Color.GREEN);
     	this.level_won.setOpaque(true);
     	gamescreen.add(this.level_won, BorderLayout.CENTER);
-    	
+    	t.reset();
+    	move.resetMovement();
     }
 
     private class MyPanel extends JPanel{
@@ -316,46 +359,47 @@ public class SplashScreen extends JFrame{
             	if(soundMenu.isplay()){sound.keyboardSound("left");}
             	System.out.println("LEFT");
             	model.update_player_position(1);
-
+            	move.addMove();
             } else if (key == KeyEvent.VK_RIGHT) {
             	if(soundMenu.isplay()){sound.keyboardSound("right");}
             	System.out.println("RIGHT");
             	model.update_player_position(3);
-            	
+            	move.addMove();
 
             } else if (key == KeyEvent.VK_UP) {
             	if(soundMenu.isplay()){sound.keyboardSound("up");}
             	System.out.println("up");
             	model.update_player_position(0);
-
+            	move.addMove();
             } else if (key == KeyEvent.VK_DOWN) {
             	if(soundMenu.isplay()){sound.keyboardSound("down");}
             	model.update_player_position(2);
-
+            	move.addMove();
             } else if (key == KeyEvent.VK_R) {
-            	
+            	t.reset();
+        		move.resetMovement();
             	System.out.println("RELOAD");
                 model.reload_level(); 
                 reset_game_view();
                 //return;
                 
             } else if (key == KeyEvent.VK_N) {
-            	
+            	t.reset();
+        		move.resetMovement();
             	System.out.println("NEXT LEVEL");
                 model.init_game_model();  
                 reset_game_view();
                // return;
                 
             } else if (key == KeyEvent.VK_P) {
-            	
+            	t.reset();
+        		move.resetMovement();
             	System.out.println("PREV LEVEL");
                 model.prev_level();  
                 reset_game_view();
                 //return;
                 
             }
-            move.addMove();
-            move.displayMove();
             pack();
         	model.view.revalidate();
         	
