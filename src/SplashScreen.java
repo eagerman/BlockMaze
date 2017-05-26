@@ -99,7 +99,7 @@ public class SplashScreen extends JFrame{
     	
     	controls = new JPanel(new GridLayout(8,1));;
     	
-    	model.init_game_model();
+    	model.get_next_level();
     	
     	JButton btnReset = new JButton("Reset");
     	JButton btnPrevLev = new JButton("Prev Level");
@@ -123,7 +123,7 @@ public class SplashScreen extends JFrame{
     		t.reset();
     		move.resetMovement();
     		System.out.println("RELOAD");
-            model.prev_level();  
+            model.reload_level();  
             reset_game_view();
             makeGameScreen();
         	setContentPane(gamescreen);
@@ -135,7 +135,6 @@ public class SplashScreen extends JFrame{
     		move.resetMovement();
     		System.out.println("PREV LEVEL");
             model.prev_level(); 
-            model.prev_level();
             reset_game_view();
             makeGameScreen();
         	setContentPane(gamescreen);
@@ -146,7 +145,7 @@ public class SplashScreen extends JFrame{
     		t.reset();
     		move.resetMovement();
     		System.out.println("NEXT LEVEL");
-            model.reload_level(); 
+            model.get_next_level();; 
             reset_game_view();
             makeGameScreen();
         	setContentPane(gamescreen);
@@ -343,17 +342,8 @@ public class SplashScreen extends JFrame{
 
 		@Override
         public void keyPressed(KeyEvent e) {
-         
-			if (model.game_won()) { 
-        	   //TODO
-        		level_done();
-            	System.out.println("NEXT LEVEL");
-                model.init_game_model();  
-                reset_game_view();
-            }
-            
+                   
             int key = e.getKeyCode();
-
 
             if (key == KeyEvent.VK_LEFT) {
             	if(soundMenu.isplay()){sound.keyboardSound("left");}
@@ -385,7 +375,7 @@ public class SplashScreen extends JFrame{
             } else if (key == KeyEvent.VK_N) {
             	
             	System.out.println("NEXT LEVEL");
-                model.init_game_model();  
+                model.get_next_level();  
                 reset_game_view();
                // return;
                 
@@ -402,7 +392,7 @@ public class SplashScreen extends JFrame{
 	        	   //TODO
 	        		model.set_level_done();
 	            	System.out.println("NEXT LEVEL");
-	                model.init_game_model();  
+	                model.get_next_level();  
 	                reset_game_view();
 	            }
             

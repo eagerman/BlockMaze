@@ -52,7 +52,7 @@ public class GameModel {
 		
 	}
 	
-	public void init_game_model() {
+	public void get_next_level() {
 		
 		this.current = this.levels.get_next_level();
 		

@@ -19,10 +19,9 @@ public class Sound extends JFrame implements ActionListener {
 	File keyF;
 	AudioClip aau, keyaau;
 	
-	Sound(JPanel panel, JButton musicButton, String musicName){
+	Sound(JPanel panel, String musicName){
 		this.panel = panel;
-		this.tempButton = musicButton;
-		tempButton.addActionListener(this);
+//		tempButton.addActionListener(this);
 		gameF = new File(musicName);
 		soundLoad();
 	}
