@@ -26,7 +26,7 @@ public class GameView extends JPanel {
 		
 		//addKeyListener(new kb_input());
 		setFocusable(true);
-		this.setBackground(Color.GREEN);
+		this.setBackground(new Color(45,45,47));
 		initTiles(model);
 		initUI();
 		

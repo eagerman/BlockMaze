@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class GameModel {
 
-	private LevelManager levels;
+	public LevelManager levels;
 	private Level current;
 	private char[][] model;
 	private Point player_location;
@@ -850,9 +850,11 @@ private void moveUp() {
 		
 		if (this.model[getRow()][getCol()+2] == '!'){
 			this.model[getRow()][getCol()+2] = '@';
-		} else if (this.model[getRow()][getCol()+2] == '#' ){
+		} else if (this.model[getRow()][getCol()+2] == ' ' ){
 			this.model[getRow()][getCol()+2] = '#';
-		} 
+		} else if (this.model[getRow()][getCol()+2] == '#' ){
+			return;
+		}
 		
 		this.model[getRow()][getCol()+1] = '&';
 		keepGoals();

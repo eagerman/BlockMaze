@@ -9,10 +9,9 @@ import java.net.URL;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
-public class Sound extends JFrame implements ActionListener {
+public class Sound extends JFrame {
 
 	JPanel panel;
-	JButton tempButton;
 	boolean sign;
 	URL cb = null, keycb = null;
 	File gameF;
@@ -21,24 +20,10 @@ public class Sound extends JFrame implements ActionListener {
 	
 	Sound(JPanel panel, String musicName){
 		this.panel = panel;
-//		tempButton.addActionListener(this);
 		gameF = new File(musicName);
 		soundLoad();
 	}
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == tempButton){
-			if(!isplay()){
-				soundLoad();tempButton.setLabel("Stop Music");
-				
-			} else {
-				stopMusic();tempButton.setLabel("Play Music");
-			}
-		}
-		panel.requestFocus();
-	}
 	
 	@SuppressWarnings("deprecation")
 	void soundLoad(){
@@ -57,10 +42,10 @@ public class Sound extends JFrame implements ActionListener {
 	
 	@SuppressWarnings("deprecation")
 	void keyboardSound(String direction){
-		if(direction == "up"){keyF = new File("up.wav");}
-		if(direction == "down"){keyF = new File("down.wav");}
-		if(direction == "left"){keyF = new File("left.wav");}
-		if(direction == "right"){keyF = new File("right.wav");}
+		if(direction == "up"){keyF = new File("resources/sound/up.wav");}
+		if(direction == "down"){keyF = new File("resources/sound/down.wav");}
+		if(direction == "left"){keyF = new File("resources/sound/left.wav");}
+		if(direction == "right"){keyF = new File("resources/sound/right.wav");}
 		try{
 			keycb = keyF.toURL(); 
 		} catch (MalformedURLException e){e.printStackTrace();}

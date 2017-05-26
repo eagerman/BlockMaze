@@ -8,10 +8,10 @@ public class LevelManager {
 	
 	private ArrayList<Level> levels;
 	private Level current_level;
-	private boolean[] won;
+	public boolean[] won;
 	private File levels_folder;
-	private int num_levels;
-	private int level_counter;
+	public int num_levels;
+	public int level_counter;
 	private int rows;
 	private int cols;
 	
@@ -20,7 +20,7 @@ public class LevelManager {
 		this.level_counter = 0;
 		this.levels = new ArrayList<Level>();
 		String level_path = Paths.get("").toAbsolutePath().getParent().toString();
-		System.out.println("Level path is "+level_path);
+		System.out.println("Level path is "+level_path );
 		this.levels_folder = new File(level_path+"/gamefinal/resources/levels");
 		read_all_levels(this.levels_folder);
 		this.num_levels = this.levels.size();
@@ -73,7 +73,7 @@ public class LevelManager {
 	}
 	
 	public Level load_first_level() {
-		this.level_counter = 0;
+		
 		return this.levels.get(this.level_counter);
 		
 	}
