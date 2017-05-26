@@ -7,6 +7,7 @@ import java.sql.Time;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 //import Game1.GameView.kb_input;
@@ -33,9 +34,9 @@ public class SplashScreen extends JFrame{
         ImageIcon webIcon = new ImageIcon("resources/images/box.png");
         setIconImage(webIcon.getImage());
         
-//		this.level_won = new JLabel("LEVEL COMPLETE!", SwingConstants.CENTER);
-//		this.level_won.setFont(myfont); 
-//		this.level_won.setOpaque(true);
+		this.level_won = new JLabel("LEVEL COMPLETE!", SwingConstants.CENTER);
+		this.level_won.setFont(myfont); 
+		this.level_won.setOpaque(true);
 
 		myfont = new Font("Arial", 1, 20);
 
@@ -244,6 +245,8 @@ public class SplashScreen extends JFrame{
         label.setIcon(ic);
         label.setText(txt);
         label.setFont(mFont);
+        Border emptyBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+        label.setBorder(emptyBorder);
         label.setHorizontalTextPosition(JLabel.CENTER);
         label.setVerticalTextPosition(JLabel.CENTER);
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -297,7 +300,8 @@ public class SplashScreen extends JFrame{
 
 		@Override
         public void keyPressed(KeyEvent e) {
-           if (model.game_won()) { 
+         
+			if (model.game_won()) { 
         	   //TODO
         		level_done();
             	System.out.println("NEXT LEVEL");
