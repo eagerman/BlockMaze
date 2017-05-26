@@ -73,7 +73,7 @@ public class LevelManager {
 	}
 	
 	public Level load_first_level() {
-		
+		this.level_counter = 0;
 		return this.levels.get(this.level_counter);
 		
 	}
