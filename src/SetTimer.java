@@ -11,23 +11,23 @@ public class SetTimer implements Runnable {
 	
 	public SetTimer(JLabel lbTime){
 		this.lbTime = lbTime;
-		time = new Thread(this);
+		this.time = new Thread(this);
 		reset();
-		time.start();
 	}
 	
 	public void reset(){
-		mcnt=01;	scnt=01;
-		str = "  	    01:00";
+		this.mcnt=01;	this.scnt=01;
+		this.str = "  	    01:00";
+		this.time.start();
 		display();
 	}
 	
 	public void display(){
-		lbTime.setText(str);
+		this.lbTime.setText(str);
 	}
 
 	public void setTimeCounter() {
-		str = "   	   ";
+		this.str = "   	   ";
 		if(mcnt<10){str += "0"+mcnt;}else{str += ":"+mcnt;}
 		if(scnt<10){str += ":0"+scnt;}else{str += ":"+scnt;}
 	}
@@ -50,7 +50,8 @@ public class SetTimer implements Runnable {
 	private void runOutTime(){
 		JOptionPane.showMessageDialog(null, "You have to RETRY or EXIT this level.","Out of Time", 
 				JOptionPane.YES_NO_OPTION);
-		time.stop();
+		reset();
+		this.time.start();
 		// Stop the game!!!
 	}
 }
